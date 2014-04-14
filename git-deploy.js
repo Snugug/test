@@ -47,10 +47,11 @@ module.exports = function (options) {
     execute('git add ' + folder + ' && git commit -m "' + message + '"', function () {
       gutil.log('Temporarily committing ' + chalk.magenta(folder));
       execute('git ls-remote ' + remote + ' ' + branch, function (rmt) {
-        gutil.log(rmt.length);
         if (rmt.length > 0) {
-          gutil.log('Removing ' + chalk.cyan(remote) + '/' + chalk.cyan(branch));
-          deployFinish();
+          gutil.log('Cleaning ' + chalk.cyan(remote) + '/' + chalk.cyan(branch));
+          execute('git push ' + remote + ' :' + branch, function () {
+            deployFinish();
+          });
         }
         else {
           deployFinish();
@@ -62,9 +63,9 @@ module.exports = function (options) {
     // Finish Deploy
     //////////////////////////////
     var deployFinish = function () {
-      gutil.log('Pushing' + chalk.magenta(folder) + ' to ' + chalk.cyan(remote) + '/' + chalk.cyan(branch));
+      gutil.log('Pushing ' + chalk.magenta(folder) + ' to ' + chalk.cyan(remote) + '/' + chalk.cyan(branch));
       execute('git subtree push --prefix ' + folder + ' ' + remote + ' ' + branch, function () {
-        gutil.log('Resetting temporary commit');
+        gutil.log('Resetting ' + chalk.magenta(folder) + ' temporary commit');
         execute('git reset HEAD^', function () {
           gutil.log('Cleaning ' + chalk.magenta(folder));
           deleteFolderRecursive(folder);
