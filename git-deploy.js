@@ -30,7 +30,7 @@ var deleteFolderRecursive = function(path) {
 
 module.exports = function (options) {
   return es.map(function (file, cb) {
-    var folder = file.path.replace(file.cwd + '/', './');
+    var folder = file.path.replace(file.cwd + '/', '');
 
     var remote = 'origin';
     var branch = 'gh-pages';
