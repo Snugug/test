@@ -46,9 +46,9 @@ module.exports = function (options) {
     // execute('git add ' + folder, function () {
     execute('git add ' + folder + ' && git commit -m "' + message + '"', function () {
       gutil.log('Temporarily committing ' + chalk.magenta(folder));
-      execute('git ls-remote ' + remote + ' ' + branch, function (remote) {
-        gutil.log(remote.length);
-        if (remote.length > 0) {
+      execute('git ls-remote ' + remote + ' ' + branch, function (rmt) {
+        gutil.log(rmt.length);
+        if (rmt.length > 0) {
           gutil.log('Removing ' + chalk.cyan(remote) + '/' + chalk.cyan(branch));
           deployFinish();
         }
